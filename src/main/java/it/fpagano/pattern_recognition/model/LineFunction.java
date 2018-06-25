@@ -20,6 +20,11 @@ public class LineFunction {
     private Double b;
 
     /**
+     * x intercept. used when slope is infinite.
+     */
+    private Double xi;
+
+    /**
      * equazione di una retta passante per due punti
      * y = m * x + b
      */
@@ -32,18 +37,14 @@ public class LineFunction {
     private static final BiFunction<Point, Double, Double> retrieveB = (p, slope) -> p.y - (slope * p.x);
 
     /**
-     * delta value when check...
+     * delta value when check doubles.
      */
     private static final double EPSILON = 0.0000001d;
 
-    /**
-     * Set of points that match the LineFunction f
-     */
-    private Set<Point> matchingPoint = new HashSet<>();
-
-    private LineFunction(Double slope, Double b) {
+    private LineFunction(Double slope, Double b, Double xi) {
         this.m = slope;
         this.b = b;
+        this.xi = xi;
     }
 
     /**
@@ -53,25 +54,44 @@ public class LineFunction {
      * @return true if the point will be part of the function. otherwise false.
      */
     public boolean pointsBelogToLineFunction(Point p) {
-        if(f.test(p)) {
-            return matchingPoint.add(p);
-        }
-
-        return false;
+        return f.test(p);
     }
 
-    public Set<Point> getMatchingPoint() {
-        return matchingPoint;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LineFunction that = (LineFunction) o;
+        return equals(m, that.m) &&
+                equals(b, that.b) &&
+                equals(xi, that.xi);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(m, b, xi);
+    }
+
+    /**
+     * Given two point, initialize the LineFunction.
+     * @param p1
+     * @param p2
+     * @return
+     */
     public static Optional<LineFunction> of(Point p1, Point p2) {
         if(p1.equals(p2)) {
             return Optional.empty();
         }
 
         double slope = calculateSlope(p1, p2);
+        Double b = retrieveB.apply(p2, slope);
+        Double xi = Double.NaN;
 
-        return Optional.of(new LineFunction(slope, retrieveB.apply(p2, slope)));
+        if(Double.isInfinite(b)) {
+            xi = p2.x;
+        }
+
+        return Optional.of(new LineFunction(slope, b, xi));
     }
 
 
@@ -85,33 +105,21 @@ public class LineFunction {
      * @return the slope value based on the formula. if (p2.y - p1.y) is 0 a infinity value will be returned.
      */
     public static double calculateSlope(Point p1, Point p2) {
-        int dx = p2.x - p1.x;
+        double dx = p2.x - p1.x;
         if(dx == 0) {
             return Double.POSITIVE_INFINITY;
         }
 
-        int dy = p2.y - p1.y;
+        double dy = p2.y - p1.y;
 
-        return dy / dx;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LineFunction lineFunction = (LineFunction) o;
-        return equals(m, lineFunction.m) &&
-                equals(b, lineFunction.b);
+        double slope = dy / dx;
+        return slope;
     }
 
     private static boolean equals(final double a, final double b) {
+        if(Double.isNaN(a) && Double.isNaN(b)) return true;
         if (a == b) return true;
         return Math.abs(a - b) < EPSILON;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(m, b);
     }
 
 }
