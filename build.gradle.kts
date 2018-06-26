@@ -6,17 +6,31 @@
  * user guide available at https://docs.gradle.org/4.8.1/userguide/java_library_plugin.html
  */
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE")
+    }
+}
+
 plugins {
     // Apply the java-library plugin to add support for Java Library
     `java-library`
+    `eclipse`
+    `idea`
+    `org.springframework.boot`
+    `io.spring.dependency-management`
+
 }
 
 dependencies {
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api("org.apache.commons:commons-math3:3.6.1")
 
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation("com.google.guava:guava:23.0")
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // Required for Kotlin integration
+
+    compile("org.springframework.boot:spring-boot-starter-web")
 
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")

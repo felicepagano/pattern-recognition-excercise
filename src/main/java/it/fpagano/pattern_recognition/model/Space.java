@@ -7,23 +7,11 @@ public class Space {
     private final Set<Point> points = new HashSet<>();
     private final Set<LineFunction> fs = new HashSet<>();
 
-    public void giovanni(Point p) {
-        if(points.add(p)) {
-            for (Point point: points) {
-                Optional<LineFunction> f = LineFunction.of(point, p);
-                f.ifPresent(lineFunction -> updateLines(lineFunction));
-            }
-        }
+    public Set<Point> getPoints() {
+        return points;
     }
 
-    private void updateLines(LineFunction lineFunction) {
-        fs.add()
-        fs.contains(lineFunction)
+    public Set<LineFunction> getFs() {
+        return fs;
     }
-
-    public void panice(int n) {
-
-    }
-
-
 }
