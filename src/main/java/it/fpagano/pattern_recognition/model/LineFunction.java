@@ -1,9 +1,7 @@
 package it.fpagano.pattern_recognition.model;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
@@ -57,14 +55,19 @@ public class LineFunction {
         return f.test(p);
     }
 
+    /**
+     * Two linefunctions are equals if the slope, x-intercept and y-intercept are equals.
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LineFunction that = (LineFunction) o;
-        return equals(m, that.m) &&
-                equals(b, that.b) &&
-                equals(xi, that.xi);
+        return checkDoubleEq(m, that.m) &&
+                checkDoubleEq(b, that.b) &&
+                checkDoubleEq(xi, that.xi);
     }
 
     @Override
@@ -116,7 +119,15 @@ public class LineFunction {
         return slope;
     }
 
-    private static boolean equals(final double a, final double b) {
+    /**
+     * Check if two double are equals.
+     *
+     * This method identify two NaN as equals. Comparison will consider an epsilon
+     * @param a
+     * @param b
+     * @return
+     */
+    private static boolean checkDoubleEq(final double a, final double b) {
         if(Double.isNaN(a) && Double.isNaN(b)) return true;
         if (a == b) return true;
         return Math.abs(a - b) < EPSILON;
