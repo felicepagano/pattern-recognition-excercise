@@ -1,7 +1,7 @@
 package it.fpagano.pattern_recognition.controller;
 
 import it.fpagano.pattern_recognition.model.Point;
-import it.fpagano.pattern_recognition.service.IService;
+import it.fpagano.pattern_recognition.service.SpaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.Set;
 public class SpaceController {
 
     @Autowired
-    private IService service;
+    private SpaceService service;
 
     @PostMapping("/point")
     public ResponseEntity<Point> addPoint(@RequestBody Point p) {

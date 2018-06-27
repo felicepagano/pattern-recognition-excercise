@@ -3,7 +3,6 @@ package it.fpagano.pattern_recognition.model;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
 
 public class LineFunction {
 
@@ -23,12 +22,6 @@ public class LineFunction {
     private Double xi;
 
     /**
-     * equazione di una retta passante per due punti
-     * y = m * x + b
-     */
-    private final Predicate<Point> f = p -> p.y == m * p.x + b;
-
-    /**
      * Equazione per ricavare il valore di y-intercept.
      * Dato un punto e la slope ricava b.
      */
@@ -37,7 +30,7 @@ public class LineFunction {
     /**
      * delta value when check doubles.
      */
-    private static final double EPSILON = 0.0000001d;
+    public static final double EPSILON = 0.0000001d;
 
     private LineFunction(Double slope, Double b, Double xi) {
         this.m = slope;
@@ -46,13 +39,15 @@ public class LineFunction {
     }
 
     /**
-     * Check if the given point belong to the line function. In that case the point will be added to the list
-     * of points that belong the function.
-     * @param p
-     * @return true if the point will be part of the function. otherwise false.
+     * y = m * x + b
+     * @param p point to test
+     * @return true if the point belong to this linefunction
      */
     public boolean pointsBelogToLineFunction(Point p) {
-        return f.test(p);
+        if(Double.isInfinite(m) && checkDoubleEq(xi, p.x)) {
+            return true;
+        }
+        return p.y == m * p.x + b;
     }
 
     /**
@@ -88,12 +83,7 @@ public class LineFunction {
 
         double slope = calculateSlope(p1, p2);
         Double b = retrieveB.apply(p2, slope);
-        Double xi = Double.NaN;
-
-        if(Double.isInfinite(b)) {
-            xi = p2.x;
-        }
-
+        Double xi = Double.isInfinite(b) ? p2.x : Double.NaN;
         return Optional.of(new LineFunction(slope, b, xi));
     }
 

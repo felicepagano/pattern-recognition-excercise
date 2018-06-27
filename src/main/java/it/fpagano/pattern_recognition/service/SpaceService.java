@@ -5,7 +5,7 @@ import it.fpagano.pattern_recognition.model.Point;
 import java.util.Optional;
 import java.util.Set;
 
-public interface IService {
+public interface SpaceService {
 
     Optional<Point> addPoint(Point p);
     Set<Point> getPoints();
