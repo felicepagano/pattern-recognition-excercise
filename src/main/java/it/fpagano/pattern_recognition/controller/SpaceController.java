@@ -27,8 +27,12 @@ public class SpaceController {
     }
 
     @GetMapping("/lines/{n}")
-    public Set<Set<Point>> getLines(@PathVariable int n){
-        return service.getLines(n);
+    public ResponseEntity<Set<Set<Point>>> getLines(@PathVariable int n){
+        Set<Set<Point>> lines = service.getLines(n);
+        if(lines.size() > 0) {
+            return ResponseEntity.status(HttpStatus.OK).body(lines);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping("/space")

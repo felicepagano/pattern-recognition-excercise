@@ -60,4 +60,12 @@ public class LineFunctionTest {
         double slope = LineFunction.calculateSlope(new Point(1.0, 1.0), new Point(2.0, 1.0));
         Assert.assertEquals(0, slope, LineFunction.EPSILON);
     }
+
+    /*
+    todo: giving 4 different points, searching for 2 point, service must return
+    n! / k!(n-k)!
+    elements
+
+    e.g. 4 different points must generate 6 lines.
+     */
 }
