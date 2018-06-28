@@ -1,8 +1,9 @@
 #Pattern Recognition
 
 
-##built with gradle 4.8.1
+##built with gradle 4.8.1. It requires java 10 to compile and run.
 
+You can use the provided gradle 
 
 ###Gradle command list:
 

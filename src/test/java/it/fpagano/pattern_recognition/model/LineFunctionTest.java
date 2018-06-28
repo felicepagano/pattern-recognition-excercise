@@ -9,7 +9,7 @@ public class LineFunctionTest {
 
     @Test
     public void whenPointsAreDifferent_LineFunctionMustExists() {
-        Optional<LineFunction> f = LineFunction.of(new Point(1.0,1.0), new Point(2.0, 2.0));
+        Optional<LineFunction> f = LineFunction.of(new Point(0.0,0.0), new Point(2.0, 2.0));
         Assert.assertTrue(f.isPresent());
     }
 
@@ -23,7 +23,7 @@ public class LineFunctionTest {
     public void whenPointBelogToTheFunction_TheResultMustBeTrue() {
         Optional<LineFunction> f = LineFunction.of(new Point(1.0,1.0), new Point(2.0, 2.0));
         LineFunction lineFunction = f.get();
-        boolean b = lineFunction.pointsBelogToLineFunction(new Point(3.0, 3.0));
+        boolean b = lineFunction.pointsBelogToLineFunction(new Point(0.0, 0.0));
         Assert.assertTrue(b);
     }
 
